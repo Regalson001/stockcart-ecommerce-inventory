@@ -1,0 +1,13 @@
+
+---
+
+# 5. Full terminal commands to run the project
+
+These commands are for **Windows PowerShell in VS Code**.
+
+## Terminal 1 — Start the Python backend
+
+First, make sure your terminal is at the main project folder:
+
+```powershell
+cd stockcart-ecommerce-inventory
