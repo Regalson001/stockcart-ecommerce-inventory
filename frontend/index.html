@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2d">
+  <meta name="description" content="StockCart mini e-commerce storefront and inventory management system.">
+
+  <title>StockCart — Modern Commerce</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#">
+    <span class="brand-mark">S</span>
+    <span>stock<span class="brand-light">cart</span></span>
+  </a>
+
+  <nav class="main-nav">
+    <a class="active" href="#shop">Shop</a>
+    <a href="#orders">My orders</a>
+  </nav>
+
+  <div class="top-actions">
+    <button class="icon-btn" id="accountBtn" aria-label="Account">
+      ♙ <span id="accountLabel">Sign in</span>
+    </button>
+
+    <button class="cart-btn" id="cartBtn">
+      Bag <span id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="shop">
+    <div class="hero-copy">
+      <span class="eyebrow">THE EVERYDAY EDITION · 2026</span>
+
+      <h1>
+        Good things.<br>
+        <em>Better living.</em>
+      </h1>
+
+      <p>
+        Thoughtful essentials for your workspace, everyday carry
+        and home. Curated to make every day feel a little better.
+      </p>
+
+      <a class="primary-link" href="#catalog">
+        Explore collection <span>↗</span>
+      </a>
+    </div>
+
+    <div class="hero-art">
+      <div class="hero-orbit"></div>
+
+      <div class="hero-note">
+        CURATED<br>
+        FOR DAILY LIFE
+      </div>
+
+      <img
+        src="https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?w=1100"
+        alt="Minimal modern interior product styling"
+      >
+    </div>
+  </section>
+
+  <section class="catalog-section" id="catalog">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">SHOP THE COLLECTION</span>
+        <h2>Considered essentials</h2>
+      </div>
+
+      <span id="resultCount" class="muted">Loading products…</span>
+    </div>
+
+    <div class="toolbar">
+      <label class="searchbox">
+        <span>⌕</span>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Search products…"
+          aria-label="Search products"
+        >
+      </label>
+
+      <div id="categoryFilters" class="filters">
+        <button class="filter active" data-category="all">All</button>
+      </div>
+    </div>
+
+    <div id="productGrid" class="product-grid">
+      <div class="empty-state">Loading the collection…</div>
+    </div>
+  </section>
+
+  <section class="orders-section" id="orders">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">YOUR ACCOUNT</span>
+        <h2>Order history</h2>
+      </div>
+
+      <button class="outline-btn" id="refreshOrders">
+        Refresh orders
+      </button>
+    </div>
+
+    <div id="ordersList" class="orders-list">
+      <p class="muted">Sign in to view your orders.</p>
+    </div>
+  </section>
+
+  <section class="admin-section" id="adminPanel" hidden>
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">STOCKCART CONTROL ROOM</span>
+        <h2>Inventory overview</h2>
+      </div>
+
+      <button class="outline-btn" id="logoutBtn">Sign out</button>
+    </div>
+
+    <div id="adminStats" class="stats-grid"></div>
+
+    <div class="admin-grid">
+      <div class="admin-card">
+        <div class="admin-card-head">
+          <h3>Product inventory</h3>
+          <button class="primary-btn" id="addProductBtn">
+            ＋ Add product
+          </button>
+        </div>
+
+        <div id="inventoryTable" class="table-wrap"></div>
+      </div>
+
+      <div class="admin-card">
+        <h3>Recent orders</h3>
+        <div id="adminOrders"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <a class="brand" href="#">
+    <span class="brand-mark">S</span>
+    <span>stock<span class="brand-light">cart</span></span>
+  </a>
+
+  <span>Thoughtful essentials. Better everyday.</span>
+  <span>© 2026 StockCart</span>
+</footer>
+
+<!-- SHOPPING CART DRAWER -->
+<div class="overlay" id="cartOverlay" hidden>
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div>
+        <span class="eyebrow">YOUR SELECTION</span>
+        <h2>Your bag <span id="drawerCount">(0)</span></h2>
+      </div>
+
+      <button class="close-btn" data-close="cartOverlay">×</button>
+    </div>
+
+    <div id="cartItems" class="cart-items"></div>
+
+    <div class="drawer-foot">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">KSh 0</strong>
+      </div>
+
+      <p class="muted small">
+        Shipping and taxes are calculated at checkout.
+      </p>
+
+      <button class="primary-btn full" id="checkoutBtn">
+        Continue to checkout
+      </button>
+    </div>
+  </aside>
+</div>
+
+<!-- LOGIN AND REGISTRATION MODAL -->
+<div class="modal-wrap" id="authModal" hidden>
+  <div class="modal">
+    <button class="close-btn modal-close" data-close="authModal">×</button>
+
+    <span class="eyebrow">WELCOME TO STOCKCART</span>
+    <h2 id="authTitle">Sign in</h2>
+
+    <form id="authForm">
+      <label id="nameField" hidden>
+        Your name
+        <input name="name" minlength="2" placeholder="Your full name">
+      </label>
+
+      <label>
+        Email address
+        <input
+          name="email"
+          type="email"
+          required
+          placeholder="you@example.com"
+        >
+      </label>
+
+      <label>
+        Password
+        <input
+          name="password"
+          type="password"
+          minlength="8"
+          required
+          placeholder="At least 8 characters"
+        >
+      </label>
+
+      <button class="primary-btn full" id="authSubmit">
+        Sign in
+      </button>
+    </form>
+
+    <p class="muted small" id="authSwitch">
+      New here?
+      <button class="text-btn" id="switchAuth">Create an account</button>
+    </p>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-wrap" id="checkoutModal" hidden>
+  <div class="modal">
+    <button class="close-btn modal-close" data-close="checkoutModal">×</button>
+
+    <span class="eyebrow">ALMOST YOURS</span>
+    <h2>Checkout</h2>
+
+    <form id="checkoutForm">
+      <label>
+        Full name
+        <input
+          name="customer_name"
+          required
+          minlength="2"
+          placeholder="Name for delivery"
+        >
+      </label>
+
+      <label>
+        Email address
+        <input
+          name="customer_email"
+          type="email"
+          required
+          placeholder="you@example.com"
+        >
+      </label>
+
+      <label>
+        Delivery address
+        <textarea
+          name="address"
+          required
+          minlength="8"
+          rows="3"
+          placeholder="Street, area, city"
+        ></textarea>
+      </label>
+
+      <div class="total-row checkout-total">
+        <span>Order total</span>
+        <strong id="checkoutTotal">KSh 0</strong>
+      </div>
+
+      <button class="primary-btn full">Place order</button>
+    </form>
+
+    <p class="muted tiny">
+      Demo checkout only. No real payment is collected.
+    </p>
+  </div>
+</div>
+
+<!-- PRODUCT MANAGEMENT MODAL -->
+<div class="modal-wrap" id="productModal" hidden>
+  <div class="modal">
+    <button class="close-btn modal-close" data-close="productModal">×</button>
+
+    <span class="eyebrow">INVENTORY MANAGEMENT</span>
+    <h2 id="productModalTitle">Add product</h2>
+
+    <form id="productForm">
+      <input type="hidden" name="id">
+
+      <label>
+        Product name
+        <input name="name" required minlength="2">
+      </label>
+
+      <div class="form-row">
+        <label>
+          SKU
+          <input name="sku" required>
+        </label>
+
+        <label>
+          Category
+          <input name="category" required>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label>
+          Price (KSh)
+          <input name="price" type="number" min="0.01" step="0.01" required>
+        </label>
+
+        <label>
+          Stock quantity
+          <input name="stock" type="number" min="0" step="1" required>
+        </label>
+      </div>
+
+      <label>
+        Image URL
+        <input name="image_url" type="url" placeholder="https://…">
+      </label>
+
+      <label>
+        Description
+        <textarea name="description" rows="3"></textarea>
+      </label>
+
+      <button class="primary-btn full">Save product</button>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
